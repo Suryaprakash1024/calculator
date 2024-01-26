@@ -1,0 +1,75 @@
+<div>
+    <label for="investmentType">Investment Type:</label>
+  <div>
+    <input type="radio" id="normal" name="investmentType" [(ngModel)]="investmentType" value="normal">
+    <label for="normal">Normal</label>
+
+    <input type="radio" id="sip" name="investmentType" [(ngModel)]="investmentType" value="sip">
+    <label for="sip">SIP</label>
+  </div>
+  <div *ngIf="investmentType == 'normal'">
+    <label for="principal">Principal Amount:</label>
+    <input type="number" id="principal" [(ngModel)]="principal">
+
+    <label for="interestRate">Interest Rate:</label>
+    <input type="number" id="interestRate" [(ngModel)]="interestRate">
+
+    <label for="timePeriod">Time Period (in years):</label>
+    <input type="number" id="timePeriod" [(ngModel)]="timePeriod">
+</div>
+    <div class="form-container" *ngIf="investmentType == 'sip'">
+        <!-- Your existing form inputs -->
+        
+        <label for="sipAmount">SIP Amount:</label>
+        <input type="number" id="sipAmount" [(ngModel)]="sipAmount">
+        
+        <label for="sipDuration">SIP Duration (in years):</label>
+        <input type="number" id="sipDuration" [(ngModel)]="sipDuration">
+        
+        <label for="sipFrequency">SIP Frequency:</label>
+        <select id="sipFrequency" [(ngModel)]="sipFrequency">
+          <option value="monthly">Monthly</option>
+          <option value="quarterly">Quarterly</option>
+          <!-- Add other frequency options as needed -->
+        </select>
+        {{fututeValueWithSIP}}
+        <!-- Your existing Calculate button -->
+      </div>
+      
+
+    <button (click)="calculateFutureValue()">Calculate</button>
+
+    <div *ngIf="futureValue !== null">
+        <p>Future Value: {{ futureValue }}</p>
+    </div>
+</div>
+<table *ngIf="investmentData" class="investment-table">
+    <thead>
+        <tr>
+            <th>Year</th>
+            <th>Investment Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let yearData of investmentData">
+            <td>{{ yearData.year }}</td>
+            <td>{{ yearData.investmentValue | indianNumber }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<table *ngIf="investmentData || (investmentData && investmentType === 'sip')" class="investment-table">
+    <thead>
+      <tr>
+        <th>Year</th>
+        <th>Investment Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let yearData of investmentData">
+        <td>{{ yearData.year }}</td>
+        <td>{{ yearData.investmentValue | indianNumber }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
