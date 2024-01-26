@@ -7,13 +7,15 @@ import { HomeComponent } from './home/home.component';
 
 import { FormsModule } from '@angular/forms';
 import { IndianNumberPipe } from 'src/shared/pipes/indian-number.pipe';
+import { SipComponent } from './sip/sip.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    IndianNumberPipe
+    IndianNumberPipe,
+    SipComponent
   ],
   imports: [
     BrowserModule,

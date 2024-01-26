@@ -1,0 +1,38 @@
+<div class="sip-calculator form-container">
+    <h2>SIP Calculator</h2>
+    <label for="investmentAmount">Initial Amount:</label>
+    <input type="number" id="investmentAmount" [(ngModel)]="investmentAmount">
+  
+    <label for="monthlyContribution">Monthly Contribution:</label>
+    <input type="number" id="monthlyContribution" [(ngModel)]="monthlyContribution">
+  
+    <label for="interestRate">Annual Interest Rate (%):</label>
+    <input type="number" id="interestRate" [(ngModel)]="interestRate">
+  
+    <label for="investmentDuration">Investment Duration (in years):</label>
+    <input type="number" id="investmentDuration" [(ngModel)]="investmentDuration">
+  
+    <button (click)="calculateSIP()">Calculate</button>
+  
+    <div *ngIf="totalAmount !== null">
+      <p>Total Amount after {{ investmentDuration }} years: {{ totalAmount | indianNumber }}</p>
+    </div>
+  </div>
+  <div *ngIf="totalAmount !== null">
+    <table class="sip-results investment-table">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Monthly Investment</th>
+          <th>Total Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sipData of sipResults">
+          <td>{{ sipData.year }}</td>
+          <td>{{ monthlyContribution | indianNumber }}</td>
+          <td>{{ sipData.totalAmount | indianNumber }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
