@@ -1,17 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-sip',
   templateUrl: './sip.component.html',
   styleUrls: ['./sip.component.scss']
 })
-export class SipComponent {
+export class SipComponent  implements OnInit{
   investmentAmount: number = 1000;
   monthlyContribution: number = 1000;
   interestRate: number = 7;
   investmentDuration: number = 12;
   totalAmount: number = 0;
   sipResults: { year: number, totalAmount: number }[] = [];
+  limitData: number[] = [0,55,100];
+ngOnInit(): void {
+  this.calculateSIP();
+}
 
   calculateSIP() {
     this.sipResults = [];

@@ -1,35 +1,44 @@
-<div>
-  <div class="form-container">
-    <label for="principal">Principal Amount:</label>
-    <input type="number" id="principal" [(ngModel)]="principal">
+<div class="container">
 
-    <label for="interestRate">Interest Rate:</label>
-    <input type="number" id="interestRate" [(ngModel)]="interestRate">
+  <div class="row">
+    <div class="form-container col-md-6 mw-350">
+      <h2>Lumpsum Calculator</h2>
+      <label for="principal">Principal Amount:</label>
+      <input type="number" id="principal" [(ngModel)]="principal">
 
-    <label for="timePeriod">Time Period (in years):</label>
-    <input type="number" id="timePeriod" [(ngModel)]="timePeriod">
-    <button (click)="calculateFutureValue()">Calculate</button>
+      <label for="interestRate">Interest Rate:</label>
+      <input type="number" id="interestRate" [(ngModel)]="interestRate">
 
-    <div *ngIf="futureValue !== null">
-      <p>Future Value: {{ futureValue }}</p>
+      <label for="timePeriod">Time Period (in years):</label>
+      <input type="number" id="timePeriod" [(ngModel)]="timePeriod">
+      <button (click)="calculateFutureValue()" class="btn ml-2" style="width: 96%;">Calculate</button>
+
+      <div *ngIf="futureValue !== null">
+        <p>Future Value: {{ futureValue }}</p>
+      </div>
     </div>
-    <!-- <app-charts [limitData]="limitData"></app-charts> -->
+    <div class="form-container col-md-6 mw-350">
+      <app-charts [limitData]="limitData"></app-charts>
+    </div>
+
   </div>
 
 
 
 </div>
-<table *ngIf="investmentData" class="investment-table">
-  <thead>
-    <tr>
-      <th>Year</th>
-      <th>Investment Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let yearData of investmentData">
-      <td>{{ yearData.year }}</td>
-      <td>{{ yearData.investmentValue | indianNumber }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="container">
+  <table *ngIf="investmentData" class="table investment-table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Year</th>
+        <th>Investment Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let yearData of investmentData">
+        <td>{{ yearData.year }}</td>
+        <td>{{ yearData.investmentValue | indianNumber }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
