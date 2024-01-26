@@ -6,8 +6,9 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 
 import { FormsModule } from '@angular/forms';
-import { IndianNumberPipe } from 'src/shared/pipes/indian-number.pipe';
 import { SipComponent } from './sip/sip.component';
+import { ChartsComponent } from './shared/components/charts/charts.component';
+import { IndianNumberPipe } from './shared/pipes/indian-number.pipe';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { SipComponent } from './sip/sip.component';
     AppComponent,
     HomeComponent,
     IndianNumberPipe,
-    SipComponent
+    SipComponent,
+    ChartsComponent
   ],
   imports: [
     BrowserModule,

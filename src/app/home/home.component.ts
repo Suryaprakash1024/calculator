@@ -10,6 +10,7 @@ export class HomeComponent implements OnInit{
   interestRate: number = 7;
   timePeriod: number = 3;
   futureValue: number = 20000;
+  limitData: number[] = [0,55,100];
 
   ngOnInit(): void {
     this.calculateFutureValue();
