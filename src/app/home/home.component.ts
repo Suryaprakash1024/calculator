@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit{
   }
 
   // Array to store investment data by year
-  investmentData: { year: number, investmentValue: number }[] = [];
+  investmentData: { year: number, investmentValue: number, wealthGained: number, totalWealth: number}[] = [];
 
   calculateFutureValue() {
     // Your existing calculation logic
@@ -26,15 +26,20 @@ export class HomeComponent implements OnInit{
 
     // Clear previous investment data
     this.investmentData = [];
-
+    let totalWealth = this.principal;
     // Calculate investment value for each year
     for (let i = 1; i <= this.timePeriod; i++) {
       const yearData = {
         year: i,
-        investmentValue: +((this.principal * Math.pow(1 + r, i)).toFixed(0))
+        investmentValue: +((this.principal * Math.pow(1 + r, i)).toFixed(0)),
+        wealthGained: +((this.principal * Math.pow(1 + r, i)) - this.principal).toFixed(0),
+        totalWealth: +(totalWealth * Math.pow(1 + r, i)).toFixed(0)
       };
       this.investmentData.push(yearData);
-    }
+      totalWealth = yearData.totalWealth; // Update total wealth for next iteration
+    };
+    const lastRec = this.investmentData[this.investmentData.length - 1];
+    this.limitData = [0,(lastRec.wealthGained*100/lastRec.investmentValue),100];
   }
 
 }

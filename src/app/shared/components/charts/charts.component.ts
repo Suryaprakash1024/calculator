@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Renderer2, SimpleChanges } from '@angular/core';
 import * as d3 from "d3";
 
 @Component({
@@ -19,15 +19,13 @@ export class ChartsComponent {
   @Input() outerLabel: string = '';
   @Input() bottomLabel: string = '';
 
-  
 
-
-  gaugemap = {};
+  gaugemap:any = {};
   range = 360;
   ContainerStyles = {};
   container: any;
 
-  constructor() {
+  constructor(private renderer: Renderer2) {
     this.size = 300;
     this.value = 50;
     this.ringWidth = 50;
@@ -42,6 +40,18 @@ export class ChartsComponent {
   getClassName(){
     return 'power-gauge'+this.index;
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('limitData' in changes && this.gaugemap && this.gaugemap.update) {
+      const powerGauge = document.querySelector('.power-gauge' + this.index);
+      if (powerGauge) {
+        // Remove all child elements inside the power-gauge element
+        while (powerGauge.firstChild) {
+          this.renderer.removeChild(powerGauge, powerGauge.firstChild);
+        }
+      }
+      this.gaugemap.update(this.limitData[1]);
+    }
+  }
   draw() {
     var chartSize = this.size;
     var chartValue = this.value;
@@ -53,6 +63,7 @@ export class ChartsComponent {
     var bottomLabel = this.bottomLabel;
 
     var self = this;
+    
     var gauge = function (container: any, configuration: any) {
       //Configuration Settings
       var config = {
@@ -94,7 +105,10 @@ export class ChartsComponent {
       }
 
 
-      function configure(configuration: any = {}) {
+      function configure(configuration: any = {},newValue = null) {
+        if(newValue){
+          limitData[1]= newValue;
+        }
         var prop = "";
 
         range = config.maxAngle - config.minAngle;
@@ -171,7 +185,7 @@ export class ChartsComponent {
         if (svg)
           var arcs = svg.append('g')
             .attr('class', 'arc')
-            .attr('transform', centerTx);
+            .attr('transform', centerTx +' rotate(180)');
         if (bestValue == 'HTB') {
           var colors = ['#b81f2d', '#edd148', '#2bd81f'];
         }
@@ -240,7 +254,7 @@ export class ChartsComponent {
         //   .attr('d', pointerLine)
         //   .attr('transform', 'rotate(' + config.minAngle + ')');
 
-        update(newValue === undefined ? 0 : newValue);
+        //update(newValue === undefined ? 0 : newValue);
 
         //Middle circle near pointer
         // svg.append("circle")
@@ -289,7 +303,7 @@ export class ChartsComponent {
         var τ = 2 * Math.PI;
         var borderInner = r - config.ringWidth - config.ringInset;
         var borderouter = r - config.ringInset;
-        var linedegree = bestValue == 'HTB' ? 180 - tickData[2] * 360 : (tickData[0] * 360) - 180;
+        var linedegree = bestValue == 'HTB' ? 180 - tickData[2] * 360 : (tickData[0] * 360) ;
         var start: any = [k + (borderInner * Math.sin((τ * linedegree) / 360)), 
           ((l + borderInner * -Math.cos((τ * linedegree) / 360)))];
         var end:any = [k + ((borderouter) * Math.sin((τ * linedegree) / 360)), 
@@ -302,12 +316,12 @@ export class ChartsComponent {
         var line = d3.line()([start, end]);
         svg.append("path")
           .attr("d", line)
-          .style("stroke", "black")
+          .style("stroke", "white")
           .style("stroke-width", "2");
-        var line2 = d3.line()([[chartSize/2,chartSize-20],[chartSize/2,chartSize-20-ringWidth]]);
+        var line2 = d3.line()([[chartSize/2,0],[(chartSize/2),ringWidth+20]]);
         svg.append("path")
           .attr("d", line2)
-          .style("stroke", "black")
+          .style("stroke", "white")
           .style("stroke-width", "2");
           
         if(chartSize/3 >= endLabel[0] && outerLabel.length >= 3){
@@ -330,9 +344,13 @@ export class ChartsComponent {
       
       gaugemap.render = render;
       function update(newValue: any, newConfiguration?: any) {
-        if (newConfiguration !== undefined) {
-          // configure(newConfiguration);
-        }
+        // if (newConfiguration !== undefined) {
+          if(newValue){
+            configure(newConfiguration,newValue);
+            render(newValue)
+          }
+          
+        // }
         var ratio = chartValue;
         var newAngle = config.minAngle + (ratio * 360);
         if (pointer)
@@ -358,6 +376,7 @@ export class ChartsComponent {
         transitionMs: 4000,
       });
       powerGauge.render(this.value);
+      this.gaugemap = powerGauge;
     }, 10);
   }
 }

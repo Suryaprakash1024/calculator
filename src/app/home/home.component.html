@@ -14,7 +14,7 @@
       <button (click)="calculateFutureValue()" class="btn ml-2" style="width: 96%;">Calculate</button>
 
       <div *ngIf="futureValue !== null">
-        <p>Future Value: {{ futureValue }}</p>
+        <p>Future Value: {{ futureValue | indianNumber}}</p>
       </div>
     </div>
     <div class="form-container col-md-6 mw-350">
@@ -31,12 +31,16 @@
     <thead>
       <tr>
         <th>Year</th>
-        <th>Investment Value</th>
+        <!-- <th>Invested Amount</th> -->
+        <th>Wealth Gained</th>
+        <th>Total Wealth</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let yearData of investmentData">
         <td>{{ yearData.year }}</td>
+        <!-- <td>{{ yearData.investmentValue }}</td> -->
+        <td>{{ yearData.wealthGained | indianNumber}}</td>
         <td>{{ yearData.investmentValue | indianNumber }}</td>
       </tr>
     </tbody>
