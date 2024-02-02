@@ -30,14 +30,14 @@
     <thead>
       <tr>
         <th>Year</th>
-        <th>Monthly Investment</th>
-        <th>Total Amount</th>
+        <th>Wealth Gained</th>
+        <th>Total Wealth</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let sipData of sipResults">
         <td>{{ sipData.year }}</td>
-        <td>{{ monthlyContribution | indianNumber }}</td>
+        <td>{{ sipData.wealthGained | indianNumber }}</td>
         <td>{{ sipData.totalAmount | indianNumber }}</td>
       </tr>
     </tbody>
